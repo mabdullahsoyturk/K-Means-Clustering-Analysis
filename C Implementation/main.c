@@ -6,14 +6,17 @@
 #include <time.h>
 #include <limits.h>
 #include "kmeans.h"
+#include <stdbool.h>
+
+#define DATASET_NAME "iris.csv"
 
 void kmeans(Instance* instances, Instance* cluster_centroids) {
     int counter = 0;
 
     while(counter < MAX_ITERATIONS) {
-        Instance clusters[3][NUMBER_OF_ELEMENTS];
-        double distances_to_clusters[3];
-        int cluster_trackers[3];
+        Instance clusters[NUMBER_OF_CLUSTERS][NUMBER_OF_ELEMENTS];
+        double distances_to_clusters[NUMBER_OF_CLUSTERS];
+        int cluster_trackers[NUMBER_OF_CLUSTERS];
 
         for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
             cluster_trackers[i] = 0;
@@ -27,12 +30,11 @@ void kmeans(Instance* instances, Instance* cluster_centroids) {
             assign_to_closest_centroid(distances_to_clusters, &instances[i], clusters, cluster_trackers);
         }
 
-        Instance previous_centroids[3];  // Store previous centroids to compare
+        Instance previous_centroids[NUMBER_OF_CLUSTERS];  // Store previous centroids to compare
         for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
-            previous_centroids[i].sepal_length = cluster_centroids[i].sepal_length;
-            previous_centroids[i].sepal_width = cluster_centroids[i].sepal_width;
-            previous_centroids[i].petal_length = cluster_centroids[i].petal_length;
-            previous_centroids[i].petal_width = cluster_centroids[i].petal_width;
+            for(int k = 0; k < NUMBER_OF_FEATURES; k++) {
+                previous_centroids[i].features[k] = cluster_centroids[i].features[k];
+            }
         }
 
         for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
@@ -42,21 +44,20 @@ void kmeans(Instance* instances, Instance* cluster_centroids) {
          // Find mean of all points within a cluster and make it as the centroid 
         find_means_and_update_centroids(clusters, cluster_centroids, cluster_trackers);
 
-        // If centroid values hasn't changed, algorithm has convereged 
-        if(cluster_centroids[0].sepal_length == previous_centroids[0].sepal_length &&
-           cluster_centroids[1].sepal_length == previous_centroids[1].sepal_length && 
-           cluster_centroids[2].sepal_length == previous_centroids[2].sepal_length &&
-           cluster_centroids[0].sepal_width == previous_centroids[0].sepal_width &&
-           cluster_centroids[1].sepal_width == previous_centroids[1].sepal_width &&
-           cluster_centroids[2].sepal_width == previous_centroids[2].sepal_width &&
-           cluster_centroids[0].petal_length == previous_centroids[0].petal_length &&
-           cluster_centroids[1].petal_length == previous_centroids[1].petal_length &&
-           cluster_centroids[2].petal_length == previous_centroids[2].petal_length &&
-           cluster_centroids[0].petal_width == previous_centroids[0].petal_width &&
-           cluster_centroids[1].petal_width == previous_centroids[1].petal_width &&
-           cluster_centroids[2].petal_width == previous_centroids[2].petal_width ) {
-                printf("Converged\n");
-                break;
+        // If centroid values hasn't changed, algorithm has convereged
+        bool stop = true;
+
+        for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
+            for(int k = 0; k < NUMBER_OF_FEATURES; k++) {
+                if(cluster_centroids[i].features[k] != previous_centroids[i].features[k]) {
+                    stop = false;
+                }
+            }
+        }
+
+        if(stop) {
+            printf("Converged\n");
+            break;
         }
 
         counter++;
@@ -67,11 +68,17 @@ int main(int argc, char const *argv[]) {
     Instance instances[NUMBER_OF_ELEMENTS]; 
     Instance cluster_centroids[NUMBER_OF_CLUSTERS];
 
+    read_instances(DATASET_NAME, instances);
+    
+    clock_t begin = clock();
     initialize_centroids(cluster_centroids);
-    read_instances("iris.csv", instances);
 
     kmeans(instances, cluster_centroids);
-    for(int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
-        printf("Cluster%d: %f\n",i, instances[i].cluster);
-    }
+    clock_t end = clock();
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+
+    printf("Time consumed: %f\n", time_spent);
+    // for(int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
+    //     printf("Cluster of instance %d : %d\n", i, (int)instances[i].cluster);
+    // }
 }

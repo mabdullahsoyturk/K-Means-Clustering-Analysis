@@ -8,11 +8,43 @@
 #include "utilities.h"
 
 double rand_from(double min, double max) {
-    // srand ( time(NULL) );
     double range = (max - min); 
     double div = RAND_MAX / range;
     return min + (rand() / div);
 }
+
+Min_Max_Pair getMinMax(double arr[], int n) { 
+    Min_Max_Pair minmax;      
+    int i; 
+    
+    /*If there is only one element then return it as min and max both*/
+    if (n == 1) { 
+        minmax.max = arr[0]; 
+        minmax.min = arr[0];      
+        return minmax; 
+    }     
+    
+    /* If there are more than one elements, then initialize min and max*/
+    if (arr[0] > arr[1]) { 
+        minmax.max = arr[0]; 
+        minmax.min = arr[1]; 
+    } else { 
+        minmax.max = arr[1]; 
+        minmax.min = arr[0]; 
+    }     
+  
+    for (i = 2; i < n; i++) { 
+        if (arr[i] >  minmax.max) {
+            minmax.max = arr[i];
+        }        
+        
+        else if (arr[i] <  minmax.min) {
+            minmax.min = arr[i];
+        }        
+    } 
+    
+    return minmax; 
+} 
 
 // This functions reads a feature of the instance
 void get_features(char* line, double *features) {
@@ -45,12 +77,12 @@ void read_instances(char* file_name, Instance* instances) {
 
     while ((read = getline(&line, &len, fp)) != -1) {
         Instance instance;
-        double features[4];
+        double features[NUMBER_OF_FEATURES];
         get_features(line, features);
-        instances[counter].petal_length = features[0];
-        instances[counter].petal_width = features[1];
-        instances[counter].sepal_length = features[2];
-        instances[counter].sepal_width = features[3];
+
+        for(int i = 0; i < NUMBER_OF_FEATURES; i++) {
+            instances[counter].features[i] = features[i];
+        }
 
         counter++;
     }

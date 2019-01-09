@@ -10,21 +10,22 @@
 void initialize_centroids(Instance* cluster_centroids) {
     srand (time(NULL));
     for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
-        cluster_centroids[i].sepal_length = rand_from(4,8);
-        cluster_centroids[i].sepal_width = rand_from(1,5);
-        cluster_centroids[i].petal_length = rand_from(1,7);
-        cluster_centroids[i].petal_width = rand_from(0.1,3);
+        cluster_centroids[i].features[0] = rand_from(4,8);
+        cluster_centroids[i].features[1] = rand_from(1,5);
+        cluster_centroids[i].features[2] = rand_from(1,7);
+        cluster_centroids[i].features[3] = rand_from(0.1,3);
     }
 }
 
 void calculate_distances_to_clusters(double* distances_to_clusters, Instance* cluster_centroids, Instance* instance) {
     for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
-        distances_to_clusters[i] = sqrt(
-            sqr(cluster_centroids[i].sepal_length - instance->sepal_length) +
-            sqr(cluster_centroids[i].sepal_width - instance->sepal_width) + 
-            sqr(cluster_centroids[i].petal_length - instance->petal_length) + 
-            sqr(cluster_centroids[i].petal_width - instance->petal_width)
-        );
+        double sum = 0;
+
+        for(int k = 0; k < NUMBER_OF_FEATURES; k++) {
+            sum += sqr(cluster_centroids[i].features[k] - instance->features[k]);
+        }
+
+        distances_to_clusters[i] = sqrt(sum);
     }
 }
 
@@ -62,22 +63,22 @@ void assign_to_closest_centroid(double* distances, Instance* instance, Instance 
 
 void find_means_and_update_centroids(Instance clusters[3][NUMBER_OF_ELEMENTS], Instance* cluster_centroids, int* cluster_trackers) {
     for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
-        double cluster_total_sepal_length = 0;
-        double cluster_total_sepal_width = 0;
-        double cluster_total_petal_length = 0;
-        double cluster_total_petal_width = 0;
+        double cluster_totals[NUMBER_OF_FEATURES];
+
+        for(int k = 0; k < NUMBER_OF_FEATURES; k++) {
+            cluster_totals[k] = 0;
+        }
+
         for(int k = 0; k < cluster_trackers[i]; k++) {
-            cluster_total_sepal_length += clusters[i][k].sepal_length;
-            cluster_total_sepal_width += clusters[i][k].sepal_width;
-            cluster_total_petal_length += clusters[i][k].petal_length;
-            cluster_total_petal_width += clusters[i][k].petal_width;
+            for(int j = 0; j < NUMBER_OF_FEATURES; j++) {
+                cluster_totals[j] += clusters[i][k].features[j];
+            }
         }
 
         if(cluster_trackers[i] != 0) {
-            cluster_centroids[i].sepal_length = cluster_total_sepal_length / (double)cluster_trackers[i];
-            cluster_centroids[i].sepal_width = cluster_total_sepal_width / (double)cluster_trackers[i];
-            cluster_centroids[i].petal_length = cluster_total_petal_length / (double)cluster_trackers[i];
-            cluster_centroids[i].petal_width = cluster_total_petal_width / (double)cluster_trackers[i];
+            for(int k = 0; k < NUMBER_OF_FEATURES; k++) {
+                cluster_centroids[i].features[k] = cluster_totals[k] / (double)cluster_trackers[i];
+            }
         }
     }
 }

@@ -6,13 +6,17 @@
 #define INF 999999999
 
 typedef struct Instance { 
-    double sepal_length;
-    double sepal_width;
-    double petal_length;
-    double petal_width;
+    double features[4];
     double cluster;
 }Instance;
+
+typedef struct Min_Max_Pair  
+{ 
+  double min; 
+  double max; 
+} Min_Max_Pair;   
 
 void get_features(char* line, double *features);
 void read_instances(char* file_name, Instance* instances);
 double rand_from(double min, double max);
+Min_Max_Pair getMinMax(double arr[], int n);
