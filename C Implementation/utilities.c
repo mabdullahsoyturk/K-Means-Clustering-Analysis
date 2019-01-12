@@ -13,7 +13,19 @@ double rand_from(double min, double max) {
     return min + (rand() / div);
 }
 
-Min_Max_Pair getMinMax(double arr[], int n) { 
+void get_mins_and_maxes(Instance* instances, Min_Max_Pair* mins_and_maxes) {
+
+    for(int i = 0; i < NUMBER_OF_FEATURES; i++) {
+        double array[NUMBER_OF_ELEMENTS];
+        for(int k = 0; k < NUMBER_OF_ELEMENTS; k++) {
+            array[k] = instances[k].features[i];
+        }
+
+        mins_and_maxes[i] = get_min_max(array, NUMBER_OF_ELEMENTS);
+    }
+}
+
+Min_Max_Pair get_min_max(double arr[], int n) { 
     Min_Max_Pair minmax;      
     int i; 
     

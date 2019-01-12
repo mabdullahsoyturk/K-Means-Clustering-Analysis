@@ -1,6 +1,6 @@
 #include "utilities.h"
 
-void initialize_centroids(Instance* cluster_centroids);
+void initialize_centroids(Instance* cluster_centroids, Instance* instances, Min_Max_Pair* mins_and_maxes);
 void calculate_distances_to_clusters(double* distances_to_clusters, Instance* cluster_centroids, Instance* instance);
 int find_min_distance_index(double* distances);
 void assign_to_closest_centroid(double* distances, Instance* instance, Instance clusters[3][NUMBER_OF_ELEMENTS],int* cluster_trackers);

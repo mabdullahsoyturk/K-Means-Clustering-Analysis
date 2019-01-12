@@ -37,9 +37,11 @@ void kmeans(Instance* instances, Instance* cluster_centroids) {
             }
         }
 
+        printf("Cluster info after iteration %d\n", counter);
         for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
-            printf("%d ", cluster_trackers[i]);
+            printf("%d\t", cluster_trackers[i]);
         }
+        printf("\n");
 
          // Find mean of all points within a cluster and make it as the centroid 
         find_means_and_update_centroids(clusters, cluster_centroids, cluster_trackers);
@@ -56,7 +58,7 @@ void kmeans(Instance* instances, Instance* cluster_centroids) {
         }
 
         if(stop) {
-            printf("Converged\n");
+            printf("\nConverged\n\n");
             break;
         }
 
@@ -67,17 +69,35 @@ void kmeans(Instance* instances, Instance* cluster_centroids) {
 int main(int argc, char const *argv[]) {
     Instance instances[NUMBER_OF_ELEMENTS]; 
     Instance cluster_centroids[NUMBER_OF_CLUSTERS];
+    Min_Max_Pair mins_and_maxes[NUMBER_OF_FEATURES];
 
     read_instances(DATASET_NAME, instances);
     
     clock_t begin = clock();
-    initialize_centroids(cluster_centroids);
+    initialize_centroids(cluster_centroids, instances, mins_and_maxes);
+
+    for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
+        printf("Cluster%d center at the beginning: ", i);
+        for(int k = 0; k < NUMBER_OF_FEATURES; k++) {
+            printf("%f ", cluster_centroids[i].features[k]);
+        }
+        printf("\n");
+    }
 
     kmeans(instances, cluster_centroids);
+
+    for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
+        printf("Cluster%d center at the end: ", i);
+        for(int k = 0; k < NUMBER_OF_FEATURES; k++) {
+            printf("%f ", cluster_centroids[i].features[k]);
+        }
+        printf("\n");
+    }
+
     clock_t end = clock();
     double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
 
-    printf("Time consumed: %f\n", time_spent);
+    printf("\nTime consumed: %f\n", time_spent);
     // for(int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
     //     printf("Cluster of instance %d : %d\n", i, (int)instances[i].cluster);
     // }
