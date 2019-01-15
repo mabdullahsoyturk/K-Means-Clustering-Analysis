@@ -16,7 +16,6 @@ typedef struct Min_Max_Pair
   double max; 
 } Min_Max_Pair;   
 
-void increase_stack_size();
 void get_features(char* line, double *features);
 void read_instances(char* file_name, Instance* instances);
 double rand_from(double min, double max);

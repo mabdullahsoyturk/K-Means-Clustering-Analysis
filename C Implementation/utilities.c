@@ -6,27 +6,6 @@
 #include <time.h>
 #include <limits.h>
 #include "utilities.h"
-#include <sys/resource.h>
-
-void increase_stack_size() {
-    const rlim_t kStackSize = sizeof(Instance) * NUMBER_OF_ELEMENTS * NUMBER_OF_FEATURES * NUMBER_OF_CLUSTERS*5;
-    struct rlimit rl;
-    int result;
-
-    result = getrlimit(RLIMIT_STACK, &rl);
-    if (result == 0)
-    {
-        if (rl.rlim_cur < kStackSize)
-        {
-            rl.rlim_cur = kStackSize;
-            result = setrlimit(RLIMIT_STACK, &rl);
-            if (result != 0)
-            {
-                fprintf(stderr, "setrlimit returned result = %d\n", result);
-            }
-        }
-    }
-}
 
 double rand_from(double min, double max) {
     double range = (max - min); 

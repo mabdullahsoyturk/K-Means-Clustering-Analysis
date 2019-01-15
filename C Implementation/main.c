@@ -95,8 +95,6 @@ void kmeans() {
 }
 
 int main(int argc, char const *argv[]) {
-    increase_stack_size();
-    
     clock_t begin = clock();
 
     kmeans();
