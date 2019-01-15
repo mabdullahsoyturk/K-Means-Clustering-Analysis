@@ -6,7 +6,7 @@
 #define INF 999999999
 
 typedef struct Instance { 
-    double features[4];
+    double features[NUMBER_OF_FEATURES];
     double cluster;
 }Instance;
 
@@ -16,8 +16,9 @@ typedef struct Min_Max_Pair
   double max; 
 } Min_Max_Pair;   
 
+void increase_stack_size();
 void get_features(char* line, double *features);
 void read_instances(char* file_name, Instance* instances);
 double rand_from(double min, double max);
-Min_Max_Pair get_min_max(double arr[], int n);
+Min_Max_Pair get_min_max(double* arr, int n);
 void get_mins_and_maxes(Instance* instances, Min_Max_Pair* mins_and_maxes);

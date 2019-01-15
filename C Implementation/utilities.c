@@ -6,6 +6,27 @@
 #include <time.h>
 #include <limits.h>
 #include "utilities.h"
+#include <sys/resource.h>
+
+void increase_stack_size() {
+    const rlim_t kStackSize = sizeof(Instance) * NUMBER_OF_ELEMENTS * NUMBER_OF_FEATURES * NUMBER_OF_CLUSTERS*5;
+    struct rlimit rl;
+    int result;
+
+    result = getrlimit(RLIMIT_STACK, &rl);
+    if (result == 0)
+    {
+        if (rl.rlim_cur < kStackSize)
+        {
+            rl.rlim_cur = kStackSize;
+            result = setrlimit(RLIMIT_STACK, &rl);
+            if (result != 0)
+            {
+                fprintf(stderr, "setrlimit returned result = %d\n", result);
+            }
+        }
+    }
+}
 
 double rand_from(double min, double max) {
     double range = (max - min); 
@@ -16,16 +37,17 @@ double rand_from(double min, double max) {
 void get_mins_and_maxes(Instance* instances, Min_Max_Pair* mins_and_maxes) {
 
     for(int i = 0; i < NUMBER_OF_FEATURES; i++) {
-        double array[NUMBER_OF_ELEMENTS];
+        double* array = malloc(sizeof(double) * NUMBER_OF_ELEMENTS);
         for(int k = 0; k < NUMBER_OF_ELEMENTS; k++) {
             array[k] = instances[k].features[i];
         }
 
         mins_and_maxes[i] = get_min_max(array, NUMBER_OF_ELEMENTS);
+        free(array);
     }
 }
 
-Min_Max_Pair get_min_max(double arr[], int n) { 
+Min_Max_Pair get_min_max(double* arr, int n) { 
     Min_Max_Pair minmax;      
     int i; 
     
@@ -88,13 +110,13 @@ void read_instances(char* file_name, Instance* instances) {
     int counter = 0;
 
     while ((read = getline(&line, &len, fp)) != -1) {
-        Instance instance;
-        double features[NUMBER_OF_FEATURES];
+        double* features = malloc(sizeof(double) * NUMBER_OF_FEATURES);
         get_features(line, features);
 
         for(int i = 0; i < NUMBER_OF_FEATURES; i++) {
             instances[counter].features[i] = features[i];
         }
+        free(features);
 
         counter++;
     }

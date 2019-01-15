@@ -10,13 +10,26 @@
 
 #define DATASET_NAME "iris.csv"
 
-void kmeans(Instance* instances, Instance* cluster_centroids) {
+void kmeans() {
     int counter = 0;
+    Instance* instances = malloc(sizeof(Instance) * NUMBER_OF_ELEMENTS);
+    Instance* cluster_centroids = malloc(sizeof(Instance) * NUMBER_OF_CLUSTERS);
+
+    read_instances(DATASET_NAME, instances);
+    initialize_centroids(cluster_centroids, instances);
+
+    for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
+        printf("Cluster%d center at the beginning: ", i);
+        for(int k = 0; k < NUMBER_OF_FEATURES; k++) {
+            printf("%f ", cluster_centroids[i].features[k]);
+        }
+        printf("\n");
+    }
 
     while(counter < MAX_ITERATIONS) {
         Instance clusters[NUMBER_OF_CLUSTERS][NUMBER_OF_ELEMENTS];
-        double distances_to_clusters[NUMBER_OF_CLUSTERS];
-        int cluster_trackers[NUMBER_OF_CLUSTERS];
+        double* distances_to_clusters = malloc(sizeof(double) * NUMBER_OF_CLUSTERS);
+        int* cluster_trackers = malloc(sizeof(int) * NUMBER_OF_CLUSTERS);
 
         for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
             cluster_trackers[i] = 0;
@@ -29,10 +42,11 @@ void kmeans(Instance* instances, Instance* cluster_centroids) {
             // Find the closest centroid to the point and assign the point to that cluster
             assign_to_closest_centroid(distances_to_clusters, &instances[i], clusters, cluster_trackers);
         }
+        free(distances_to_clusters);
 
-        Instance previous_centroids[NUMBER_OF_CLUSTERS];  // Store previous centroids to compare
+        Instance* previous_centroids = malloc(sizeof(Instance) * NUMBER_OF_CLUSTERS); 
         for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
-            for(int k = 0; k < NUMBER_OF_FEATURES; k++) {
+            for(int k = 0; k < NUMBER_OF_FEATURES; k++) { // Store previous centroids to compare
                 previous_centroids[i].features[k] = cluster_centroids[i].features[k];
             }
         }
@@ -45,6 +59,7 @@ void kmeans(Instance* instances, Instance* cluster_centroids) {
 
          // Find mean of all points within a cluster and make it as the centroid 
         find_means_and_update_centroids(clusters, cluster_centroids, cluster_trackers);
+        free(cluster_trackers);
 
         // If centroid values hasn't changed, algorithm has convereged
         bool stop = true;
@@ -57,6 +72,8 @@ void kmeans(Instance* instances, Instance* cluster_centroids) {
             }
         }
 
+        free(previous_centroids);
+
         if(stop) {
             printf("\nConverged\n\n");
             break;
@@ -64,27 +81,6 @@ void kmeans(Instance* instances, Instance* cluster_centroids) {
 
         counter++;
     }
-}
-
-int main(int argc, char const *argv[]) {
-    Instance instances[NUMBER_OF_ELEMENTS]; 
-    Instance cluster_centroids[NUMBER_OF_CLUSTERS];
-    Min_Max_Pair mins_and_maxes[NUMBER_OF_FEATURES];
-
-    read_instances(DATASET_NAME, instances);
-    
-    clock_t begin = clock();
-    initialize_centroids(cluster_centroids, instances, mins_and_maxes);
-
-    for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
-        printf("Cluster%d center at the beginning: ", i);
-        for(int k = 0; k < NUMBER_OF_FEATURES; k++) {
-            printf("%f ", cluster_centroids[i].features[k]);
-        }
-        printf("\n");
-    }
-
-    kmeans(instances, cluster_centroids);
 
     for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
         printf("Cluster%d center at the end: ", i);
@@ -94,11 +90,19 @@ int main(int argc, char const *argv[]) {
         printf("\n");
     }
 
+    free(cluster_centroids);
+    free(instances);
+}
+
+int main(int argc, char const *argv[]) {
+    increase_stack_size();
+    
+    clock_t begin = clock();
+
+    kmeans();
+
     clock_t end = clock();
     double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
 
     printf("\nTime consumed: %f\n", time_spent);
-    // for(int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
-    //     printf("Cluster of instance %d : %d\n", i, (int)instances[i].cluster);
-    // }
 }

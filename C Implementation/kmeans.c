@@ -7,8 +7,9 @@
 #include <limits.h>
 #include "kmeans.h"
 
-void initialize_centroids(Instance* cluster_centroids, Instance* instances, Min_Max_Pair* mins_and_maxes) {
+void initialize_centroids(Instance* cluster_centroids, Instance* instances) {
     srand (time(NULL));
+    Min_Max_Pair* mins_and_maxes = malloc(sizeof(Min_Max_Pair) * NUMBER_OF_FEATURES);
     get_mins_and_maxes(instances, mins_and_maxes);
 
     for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
@@ -16,6 +17,7 @@ void initialize_centroids(Instance* cluster_centroids, Instance* instances, Min_
             cluster_centroids[i].features[k] = rand_from(mins_and_maxes[k].min,mins_and_maxes[k].max);            
         }
     }
+    free(mins_and_maxes);
 }
 
 void calculate_distances_to_clusters(double* distances_to_clusters, Instance* cluster_centroids, Instance* instance) {
@@ -56,10 +58,9 @@ void assign_to_closest_centroid(double* distances, Instance* instance, Instance 
     }
 }
 
-void find_means_and_update_centroids(Instance clusters[3][NUMBER_OF_ELEMENTS], Instance* cluster_centroids, int* cluster_trackers) {
+void find_means_and_update_centroids(Instance clusters[3][NUMBER_OF_ELEMENTS], Instance* cluster_centroids, int* cluster_trackers) {     
     for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
-        double cluster_totals[NUMBER_OF_FEATURES];
-
+        double* cluster_totals = malloc(sizeof(double) * NUMBER_OF_FEATURES);
         for(int k = 0; k < NUMBER_OF_FEATURES; k++) {
             cluster_totals[k] = 0;
         }
@@ -75,5 +76,6 @@ void find_means_and_update_centroids(Instance clusters[3][NUMBER_OF_ELEMENTS], I
                 cluster_centroids[i].features[k] = cluster_totals[k] / (double)cluster_trackers[i];
             }
         }
+        free(cluster_totals);
     }
 }
