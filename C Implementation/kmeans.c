@@ -58,7 +58,7 @@ void assign_to_closest_centroid(double* distances, Instance* instance, Instance 
     }
 }
 
-void find_means_and_update_centroids(Instance clusters[3][NUMBER_OF_ELEMENTS], Instance* cluster_centroids, int* cluster_trackers) {     
+void find_means_and_update_centroids(Instance clusters[NUMBER_OF_CLUSTERS][NUMBER_OF_ELEMENTS], Instance* cluster_centroids, int* cluster_trackers) {     
     for(int i = 0; i < NUMBER_OF_CLUSTERS; i++) {
         double* cluster_totals = malloc(sizeof(double) * NUMBER_OF_FEATURES);
         for(int k = 0; k < NUMBER_OF_FEATURES; k++) {
