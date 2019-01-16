@@ -1,5 +1,6 @@
 #include "utilities.h"
 
+void kmeans();
 void initialize_centroids(Instance* cluster_centroids, Instance* instances);
 void calculate_distances_to_clusters(double* distances_to_clusters, Instance* cluster_centroids, Instance* instance);
 int find_min_distance_index(double* distances);
