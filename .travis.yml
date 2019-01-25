@@ -1,5 +1,7 @@
 language: c
+install:
+  - git clone https://github.com/mabdullahsoyturk/K-Means-Clustering-Analysis.git K-Means-Clustering
+  - cd K-Means-Clustering/C_Implementation
 script: 
-  - cd C Implementation
   - make
   - ./output
