@@ -1,3 +1,0 @@
-language: C
-script: cd C Implementation
-script: make
