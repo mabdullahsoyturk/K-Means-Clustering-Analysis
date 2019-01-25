@@ -4,4 +4,3 @@ install:
   - cd K-Means-Clustering/C_Implementation
 script: 
   - make
-  - ./output
