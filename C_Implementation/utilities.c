@@ -14,10 +14,10 @@ double rand_from(double min, double max) {
 }
 
 void get_mins_and_maxes(Instance* instances, Min_Max_Pair* mins_and_maxes) {
-
-    for(int i = 0; i < NUMBER_OF_FEATURES; i++) {
+    int i, k;
+    for(i = 0; i < NUMBER_OF_FEATURES; i++) {
         double* array = malloc(sizeof(double) * NUMBER_OF_ELEMENTS);
-        for(int k = 0; k < NUMBER_OF_ELEMENTS; k++) {
+        for(k = 0; k < NUMBER_OF_ELEMENTS; k++) {
             array[k] = instances[k].features[i];
         }
 
@@ -76,6 +76,7 @@ void get_features(char* line, double *features) {
 
 // This functions reads all instances from the csv file
 void read_instances(char* file_name, Instance* instances) {
+    int i;
     FILE * fp;
     char * line = NULL;
     size_t len = 0;
@@ -92,7 +93,7 @@ void read_instances(char* file_name, Instance* instances) {
         double* features = malloc(sizeof(double) * NUMBER_OF_FEATURES);
         get_features(line, features);
 
-        for(int i = 0; i < NUMBER_OF_FEATURES; i++) {
+        for(i = 0; i < NUMBER_OF_FEATURES; i++) {
             instances[counter].features[i] = features[i];
         }
         free(features);
