@@ -13,7 +13,9 @@ $ make
 $ ./output
 ```
 
-# Running times with Iris Dataset
+### Running times with Iris Dataset
+
+Complexity of the algorithm: O(n^(dk+1)) where n is the number of rows in the dataset, k is the number of clusters and d is the dimension.
 
 | Python | C |
 | ------ | ------ |
