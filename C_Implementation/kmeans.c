@@ -138,6 +138,7 @@ int find_min_distance_index(double* distances) {
 }
 
 void assign_to_closest_centroid(double* distances, Instance* instance, Instance clusters[NUMBER_OF_CLUSTERS][NUMBER_OF_ELEMENTS], int* cluster_trackers) {
+    int i;
     int min_distance_index = find_min_distance_index(distances);
 
     for(i = 0; i < NUMBER_OF_CLUSTERS; i++) {
