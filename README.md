@@ -2,6 +2,8 @@
 
 ### Build
 
+[![Build Status](https://travis-ci.com/mabdullahsoyturk/K-Means-Clustering-Analysis.svg?branch=master)](https://travis-ci.com/mabdullahsoyturk/K-Means-Clustering-Analysis)
+
 ```sh
 $ git clone https://github.com/mabdullahsoyturk/K-Means-Clustering-Analysis.git
 $ cd K-Means-Clustering-Analysis
