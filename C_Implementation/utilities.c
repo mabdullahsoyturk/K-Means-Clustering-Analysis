@@ -1,10 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <string.h>
-#include <math.h>
-#include <time.h>
-#include <limits.h>
 #include "utilities.h"
 
 double rand_from(double min, double max) {

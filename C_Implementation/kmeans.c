@@ -1,12 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <string.h>
-#include <math.h>
-#include <time.h>
-#include <limits.h>
 #include "kmeans.h"
-#include <stdbool.h>
 
 #define DATASET_NAME "../iris.csv"
 

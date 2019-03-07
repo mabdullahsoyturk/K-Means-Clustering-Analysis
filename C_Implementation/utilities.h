@@ -5,6 +5,15 @@
 #define sqr(x) ((x) * (x))
 #define INF 999999999
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <string.h>
+#include <math.h>
+#include <time.h>
+#include <limits.h>
+#include <stdbool.h>
+
 typedef struct Instance { 
     double features[NUMBER_OF_FEATURES];
     double cluster;
