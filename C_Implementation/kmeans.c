@@ -8,7 +8,7 @@
 #include "kmeans.h"
 #include <stdbool.h>
 
-#define DATASET_NAME "iris.csv"
+#define DATASET_NAME "../iris.csv"
 
 void kmeans() {
     int counter = 0;
