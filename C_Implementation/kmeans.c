@@ -124,7 +124,7 @@ void calculate_distances_to_clusters(double* distances_to_clusters, Instance* cl
 
 int find_min_distance_index(double* distances) {
     int i;
-    int min = INF;
+    int min = (int)INFINITY;
     int index = -1;
 
     for(i = 0; i < NUMBER_OF_CLUSTERS; i++) {
