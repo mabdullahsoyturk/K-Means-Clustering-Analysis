@@ -1,14 +1,28 @@
 # Analysis of K Means Clustering written in Python and C
 
-### Build
+### Project Structure
+
+```bash
+K-Means-Clustering-Analysis/        
+                    C Implementation/               # Contains C implementation.
+                        kmeans.c                    # Contains kmeans functions.
+                        utilities.c                 # Contains utility functions.
+                        main.c                      # Driver
+                    Python Implementation/          # Contains Python implementation.
+                        KMeansClustering.ipynb      # Contains scikit-learn implementation. 
+```
+
+### C Build
+
+[![Build Status](https://travis-ci.com/mabdullahsoyturk/K-Means-Clustering-Analysis.svg?branch=master)](https://travis-ci.com/mabdullahsoyturk/K-Means-Clustering-Analysis)
 
 ```sh
 $ git clone https://github.com/mabdullahsoyturk/K-Means-Clustering-Analysis.git
-$ cd K-Means-Clustering-Analysis
+$ cd K-Means-Clustering-Analysis/C_Implementation
 $ make
 ```
 
-### Run
+### C Run
 ```sh
 $ ./output
 ```
