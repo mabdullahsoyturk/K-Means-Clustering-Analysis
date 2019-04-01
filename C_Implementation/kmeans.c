@@ -105,7 +105,7 @@ void calculate_distances_to_clusters(double* distances_to_clusters, Instance* cl
         double sum = 0;
 
         for(k = 0; k < NUMBER_OF_FEATURES; k++) {
-            sum += sqr(cluster_centroids[i].features[k] - instance->features[k]);
+            sum += pow(cluster_centroids[i].features[k] - instance->features[k], 2);
         }
 
         distances_to_clusters[i] = sqrt(sum);
