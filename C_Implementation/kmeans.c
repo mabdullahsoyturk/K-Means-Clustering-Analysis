@@ -1,7 +1,5 @@
 #include "kmeans.h"
 
-#define DATASET_NAME "../iris.csv"
-
 void kmeans() {
     int counter = 0;
     int i, k;

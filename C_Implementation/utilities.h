@@ -3,7 +3,7 @@
 #define NUMBER_OF_CLUSTERS 3
 #define MAX_ITERATIONS 100
 #define sqr(x) ((x) * (x))
-#define INF 999999999
+#define DATASET_NAME "../iris.csv"
 
 #include <stdlib.h>
 #include <stdio.h>
