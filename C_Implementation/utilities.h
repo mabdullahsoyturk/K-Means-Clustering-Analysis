@@ -2,7 +2,6 @@
 #define NUMBER_OF_FEATURES 4
 #define NUMBER_OF_CLUSTERS 3
 #define MAX_ITERATIONS 100
-#define sqr(x) ((x) * (x))
 #define DATASET_NAME "../iris.csv"
 
 #include <stdlib.h>

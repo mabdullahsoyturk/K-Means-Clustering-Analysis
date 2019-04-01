@@ -59,11 +59,11 @@ void get_features(char* line, double *features) {
     features[count] = atof(tok);
 
     while (tok != NULL) {
-        count++;
         tok = strtok(NULL, ",");
         if(tok != NULL) {
             features[count] = atof(tok);
         }
+        count++;
     }
 }
 
